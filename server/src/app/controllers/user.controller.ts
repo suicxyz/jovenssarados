@@ -8,10 +8,9 @@ export default new (class UserController {
 		try {
 			const users = await User.find();
 
-			return res.status(200).json(users);
-		} catch (err) {
-			if (err) throw err;
-			return res.status(400).send(new Error("Could not list users."));
+			return res.status(200).json({ status: "OK", users });
+		} catch (e) {
+			return res.status(400).json({ status: "ERROR", message: e.message });
 		}
 	}
 
@@ -20,18 +19,20 @@ export default new (class UserController {
 
 		if (!id)
 			return res
-				.status(200)
-				.send(new Error("User ID is not specified in URL."));
+				.status(400)
+				.json({ status: "ERROR", message: "User ID is not specified in URL." });
 
 		try {
 			const user = await User.findById(id);
 
-			if (!user) return res.status(404).send(new Error("User not found."));
+			if (!user)
+				return res
+					.status(400)
+					.json({ status: "ERROR", message: "User not found." });
 
-			return res.status(200).json(user);
-		} catch (err) {
-			if (err) throw err;
-			return res.status(400).send(new Error("Could not get user by ID."));
+			return res.status(200).json({ status: "OK", user });
+		} catch (e) {
+			return res.status(400).json({ status: "ERROR", message: e.message });
 		}
 	}
 
@@ -39,54 +40,78 @@ export default new (class UserController {
 		const { body } = req;
 
 		try {
-			if (await User.findOne({ email: body.email }))
-				return res.status(400).send(new Error("User already exists."));
-
-			if (!cpf.isValid(body.cpf))
+			if (
+				(await User.findOne({ email: body.email })) ||
+				(await User.findOne({ cpf: body.cpf })) ||
+				(await User.findOne({ email: body.email, cpf: body.cpf }))
+			) {
 				return res
 					.status(400)
-					.send(new Error("The specified CPF is not valid."));
+					.json({ status: "ERROR", message: "User already exist." });
+			}
+
+			if (!cpf.isValid(body.cpf))
+				return res.status(400).json({
+					status: "ERROR",
+					message: "The specified CPF is not valid.",
+				});
 
 			const user = await User.create(body);
 
-			delete user.password;
+			user.password = undefined;
 
-			return res.status(201).json({ message: "User created.", user });
-		} catch (err) {
-			if (err) throw err;
-			return res.status(400).send(new Error("Could not create user."));
+			return res.status(201).json({ status: "OK", user });
+		} catch (e) {
+			return res.status(400).json({ status: "ERROR", message: e.message });
 		}
 	}
 
 	async update(req: Request, res: Response): Promise<Response> {
+		const { id } = req.params;
+		const { body } = req;
+
+		if (!id)
+			return res.status(401).json({
+				status: "ERROR",
+				message: "Could not find user with the specified ID in URL.",
+			});
+
 		try {
-			return res.status(200).json({ message: "User updated." });
-		} catch (err) {
-			if (err) throw err;
-			return res.status(400).send(new Error("Could not update user."));
+			if (!(await User.findById(id)))
+				return res.status(401).json({
+					status: "ERROR",
+					message: "User does not exist.",
+				});
+
+			const user = await User.findByIdAndUpdate(id, body, { new: true });
+
+			return res.status(200).json({ status: "OK", user });
+		} catch (e) {
+			return res.status(401).json({ status: "ERROR", message: e.message });
 		}
 	}
 
 	async delete(req: Request, res: Response): Promise<Response> {
+		console.log(req);
 		const { id } = req.params;
 
 		if (!id)
 			return res
 				.status(400)
-				.send(new Error("User ID is not specified in URL."));
+				.json({ status: "ERROR", message: "User ID is not specified in URL." });
 
 		try {
-			if (await User.findById(id))
-				return res
-					.status(400)
-					.send(new Error("Could not find user with the provided ID."));
+			if (!(await User.findById(id)))
+				return res.status(400).json({
+					status: "ERROR",
+					message: "Could not find user with the provided ID.",
+				});
 
 			await User.findByIdAndDelete(id);
 
-			return res.status(200).json({ message: "User deleted." });
-		} catch (err) {
-			if (err) throw err;
-			return res.status(400).send(new Error("Could not delete user."));
+			return res.status(200).json({ status: "OK" });
+		} catch (e) {
+			return res.status(400).json({ status: "ERROR", message: e.message });
 		}
 	}
 })();
