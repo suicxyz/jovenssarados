@@ -41,9 +41,12 @@ export default new (class UserController {
 
 		try {
 			if (
-				(await User.findOne({ email: body.email })) ||
-				(await User.findOne({ cpf: body.cpf })) ||
-				(await User.findOne({ email: body.email, cpf: body.cpf }))
+				await User.findOne({
+					$or: [
+						{ email: body.email },
+						{ cpf: body.cpf }
+					]
+				})
 			) {
 				return res
 					.status(400)
