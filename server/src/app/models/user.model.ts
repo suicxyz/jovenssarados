@@ -39,7 +39,7 @@ const UserSchema = new mongoose.Schema({
 		trim: true,
 	},
 	cpf: {
-		type: Number,
+		type: String,
 		require: true,
 		trim: true,
 	},
