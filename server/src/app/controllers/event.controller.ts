@@ -7,9 +7,9 @@ export default new (class EventController {
 		try {
 			const events = await Event.find();
 
-			return res.status(200).json(events);
-		} catch (err) {
-			return res.status(400).send(new Error("Could not list events."));
+			return res.status(200).json({ status: "OK", events });
+		} catch (e) {
+			return res.status(400).json({ status: "ERROR", message: e.message });
 		}
 	}
 
@@ -17,33 +17,37 @@ export default new (class EventController {
 		const { id } = req.params;
 
 		if (!id)
-			return res
-				.status(400)
-				.send(new Error("Event ID is not specified in URL."));
+			return res.status(400).json({
+				status: "ERROR",
+				message: "Event ID is not specified in URL.",
+			});
 
 		try {
 			const event = await Event.findById(id);
 
-			if (!event) return res.status(404).send(new Error("Event not found."));
+			if (!event)
+				return res
+					.status(400)
+					.json({ status: "ERROR", message: "Event not found." });
 
-			return res.status(200).json(event);
-		} catch (err) {
-			return res.status(400).send(new Error("Could not find event."));
+			return res.status(200).json({ status: "OK", event });
+		} catch (e) {
+			return res.status(400).json({ status: "ERROR", message: e.message });
 		}
 	}
 
 	async create(req: Request, res: Response): Promise<Response> {
 		const { body } = req;
+		const { login } = req.session;
 
 		try {
-			await Event.create(body);
-			
+			await Event.create({ ...body, createdBy: login._id });
+
 			const event = await Event.findOne().sort({ createdAt: -1 }).lean().exec();
 
-			return res.status(201).json(event);
-		} catch (err) {
-			console.log(err);
-			return res.status(400).send(new Error("Could not create event."));
+			return res.status(201).json({ status: "OK", event });
+		} catch (e) {
+			return res.status(400).json({ status: "ERROR", message: e.message });
 		}
 	}
 
@@ -62,7 +66,7 @@ export default new (class EventController {
 			const event = await Event.findById(id);
 
 			return res.status(201).json(event);
-		} catch (err) {
+		} catch (e) {
 			return res.status(400).send(new Error("Could not find event."));
 		}
 	}
@@ -79,7 +83,7 @@ export default new (class EventController {
 			await Event.findByIdAndDelete(id);
 
 			return res.status(204).json({ message: "Event deleted." });
-		} catch (err) {
+		} catch (e) {
 			return res.status(400).send(new Error("Could not delete event."));
 		}
 	}
