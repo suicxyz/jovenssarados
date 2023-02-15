@@ -49,7 +49,7 @@ const UserSchema = new mongoose.Schema({
 		trim: true,
 	},
 	registered_events: {
-		type: mongoose.Schema.Types.ObjectId,
+		type: Array<mongoose.Schema.Types.ObjectId>,
 		ref: "UserEvent",
 		trim: true,
 	},
