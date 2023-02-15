@@ -37,6 +37,11 @@ const EventSchema = new mongoose.Schema({
 		ref: "Location",
 		require: true,
 	},
+	created_by: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "User",
+		require: true
+	},
 	created_at: {
 		type: Date,
 		default: BrazilTimezone(),
@@ -47,14 +52,10 @@ EventSchema.pre("save", async function (next: NextFunction) {
 	const { date } = this.date_time;
 	const { time } = this.date_time;
 
-	this.date_time.date = dat.format(
-		new Date(Date.parse(`${date}`)),
-		"DD/MM/YYYY"
-	);
-	this.date_time.time = dat.format(
-		new Date(Date.parse(`${date}T${time}:00`)),
-		"HH:mm"
-	);
+	const formated_date = new Date(Date.parse(`${date}T${time}:00`));
+
+	this.date_time.date = dat.format(formated_date, "DD/MM/YYYY");
+	this.date_time.time = dat.format(formated_date, "HH:mm");
 
 	next();
 });
