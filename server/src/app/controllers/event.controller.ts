@@ -38,10 +38,9 @@ export default new (class EventController {
 
 	async create(req: Request, res: Response): Promise<Response> {
 		const { body } = req;
-		const { login } = req.session;
 
 		try {
-			await Event.create({ ...body, createdBy: login._id });
+			await Event.create({ ...body, created_by: body._id });
 
 			const event = await Event.findOne().sort({ createdAt: -1 }).lean().exec();
 
