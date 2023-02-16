@@ -2,6 +2,19 @@ import { Router } from "express";
 const router = Router();
 
 import { User, Event } from "@controllers";
+import { User as UserModel } from "@models";
+
+router.delete("/api/debug/users", async (req, res) => {
+	try {
+		const users = await UserModel.find();
+
+		for (const user of users) await UserModel.findByIdAndDelete(user._id);
+
+		return res.status(200).json({ status: "OK", message: "DD" });
+	} catch (e) {
+		return res.status(400).json({ status: "ERROR", message: e.message });
+	}
+});
 
 router.get("/api/users", User.list);
 router.get("/api/users/:id", User.show);
