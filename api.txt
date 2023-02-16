@@ -10,5 +10,5 @@ INS - ID Not Specified        	- ID não especificado
 
 Quando o valor de "status" for igual a "OK", o parâmetro "message" existirá nos seguintes casos:
 
-DA - Document Deleted			- Registro excluído
+DD - Document Deleted			- Registro excluído
 AA - Access Authorized 		- Acesso Autorizado
