@@ -2,13 +2,25 @@ import { Router } from "express";
 const router = Router();
 
 import { User, Event } from "@controllers";
-import { User as UserModel } from "@models";
+import { User as UserModel, Event as EventsModel } from "@models";
 
 router.delete("/api/debug/users", async (req, res) => {
 	try {
 		const users = await UserModel.find();
 
 		for (const user of users) await UserModel.findByIdAndDelete(user._id);
+
+		return res.status(200).json({ status: "OK", message: "DD" });
+	} catch (e) {
+		return res.status(400).json({ status: "ERROR", message: e.message });
+	}
+});
+
+router.delete("/api/debug/events", async (req, res) => {
+	try {
+		const events = await EventsModel.find();
+
+		for (const event of events) await EventsModel.findByIdAndDelete(event._id);
 
 		return res.status(200).json({ status: "OK", message: "DD" });
 	} catch (e) {
