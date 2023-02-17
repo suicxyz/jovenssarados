@@ -9,7 +9,7 @@ export default new (class EventController {
 
 			return res.status(200).json({ status: "OK", events });
 		} catch (e) {
-			return res.status(400).json({ status: "ERROR", message: e.message });
+			return res.status(400).json({ status: "ERROR", message: "ONC" });
 		}
 	}
 
@@ -19,20 +19,18 @@ export default new (class EventController {
 		if (!id)
 			return res.status(400).json({
 				status: "ERROR",
-				message: "Event ID is not specified in URL.",
+				message: "INS",
 			});
 
 		try {
 			const event = await Event.findById(id);
 
 			if (!event)
-				return res
-					.status(400)
-					.json({ status: "ERROR", message: "Event not found." });
+				return res.status(400).json({ status: "ERROR", message: "DNF" });
 
 			return res.status(200).json({ status: "OK", event });
 		} catch (e) {
-			return res.status(400).json({ status: "ERROR", message: e.message });
+			return res.status(400).json({ status: "ERROR", message: "ONC" });
 		}
 	}
 
@@ -40,13 +38,11 @@ export default new (class EventController {
 		const { body } = req;
 
 		try {
-			await Event.create({ ...body, created_by: body._id });
-
-			const event = await Event.findOne().sort({ createdAt: -1 }).lean().exec();
+			const event = await Event.create({ ...body, created_by: body._id });
 
 			return res.status(201).json({ status: "OK", event });
 		} catch (e) {
-			return res.status(400).json({ status: "ERROR", message: e.message });
+			return res.status(400).json({ status: "ERROR", message: "ONC" });
 		}
 	}
 
@@ -54,36 +50,33 @@ export default new (class EventController {
 		const { id } = req.params;
 		const { body } = req;
 
-		if (!id)
-			return res
-				.status(400)
-				.send(new Error("Event ID is not specified in URL."));
+		if (!id) return res.status(400).json({ status: "ERROR", message: "INS" });
 
 		try {
+			if (!(await Event.findById(id)))
+				return res.status(400).json({ status: "ERROR", message: "DNF" });
+
 			await Event.findByIdAndUpdate(id, body);
 
 			const event = await Event.findById(id);
 
-			return res.status(201).json(event);
+			return res.status(201).json({ status: "OK", event });
 		} catch (e) {
-			return res.status(400).send(new Error("Could not find event."));
+			return res.status(400).json({ status: "ERROR", message: "ONC" });
 		}
 	}
 
 	async delete(req: Request, res: Response): Promise<Response> {
 		const { id } = req.params;
 
-		if (!id)
-			return res
-				.status(400)
-				.send(new Error("Event ID is not specified in URL."));
+		if (!id) return res.status(400).json({ status: "ERROR", message: "INS" });
 
 		try {
 			await Event.findByIdAndDelete(id);
 
-			return res.status(204).json({ message: "Event deleted." });
+			return res.status(204).json({ status: "OK", message: "DD" });
 		} catch (e) {
-			return res.status(400).send(new Error("Could not delete event."));
+			return res.status(400).json({ status: "ERROR", message: "ONC" });
 		}
 	}
 })();

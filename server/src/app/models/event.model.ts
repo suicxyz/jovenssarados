@@ -40,7 +40,7 @@ const EventSchema = new mongoose.Schema({
 	created_by: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "User",
-		require: true
+		require: true,
 	},
 	created_at: {
 		type: Date,
