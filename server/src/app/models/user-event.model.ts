@@ -12,6 +12,24 @@ const UserEventSchema = new mongoose.Schema({
 		ref: "Event",
 		required: true,
 	},
+	status: {
+		type: String,
+		enum: ["Marcado", "Ocorrido", "Cancelado/Reembolsado"],
+		default: "Marcado",
+		require: true,
+	},
+	qrcode: {
+		image: {
+			type: String,
+			require: true,
+			trim: true,
+		},
+		text: {
+			type: String,
+			require: true,
+			trim: true,
+		},
+	},
 	created_at: {
 		type: Date,
 		default: BrazilTimezone(),
