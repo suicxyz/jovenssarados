@@ -1,15 +1,15 @@
 import { useState } from "react";
-import "./App.css";
+import { GlobalStyle } from "./GlobalStyle";
 
-import img from "./assets/underconstruction.png";
+import { Home } from "./Pages/Home";
 
 function App() {
-	const [count, setCount] = useState(0);
 
 	return (
-		<div className="App">
-			<img src={img} alt="" />
-		</div>
+		<>
+			<GlobalStyle />
+			<Home />
+		</>
 	);
 }
 
