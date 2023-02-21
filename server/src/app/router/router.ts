@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 
-import { User, Event, UserEvent } from "@controllers";
+import { User, Event, UserEvent, Auth } from "@controllers";
 import {
 	User as UserModel,
 	Event as EventsModel,
@@ -64,5 +64,7 @@ router.get("/api/user-events/:id", auth, UserEvent.show);
 router.post("/api/user-events", auth, UserEvent.create);
 router.put("/api/user-events", auth, UserEvent.update);
 router.delete("/api/user-events/:id", auth, UserEvent.delete);
+
+router.post("/api/auth/login", auth, Auth.login);
 
 export default router;
