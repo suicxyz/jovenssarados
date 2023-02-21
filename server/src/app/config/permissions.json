@@ -1,6 +1,6 @@
 {
 	"permissions": [
-		"[get]/api/users/=(0)",
+		"[get]/api/users=(0)",
 		"[get]/api/users/:id=(0)",
 		"[post]/api/users=(0)",
 		"[update]/api/users/:id=(1)",
