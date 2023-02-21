@@ -12,7 +12,10 @@ DAE - Document Already Exist
 	Já existe um registro com a mesma credencial (email, cpf, telefone etc).
 
 FNV - Format Not Valid
-	Formato inválido (CPF, email, etc).
+	Formato inválido (CPF, email etc).
+
+CNV - Credentials Not Valid
+	Credenciais inválidas (senha etc).
 
 ONC - Operation Not Concluded
 	Operação não concluída, erro desconhecido.
