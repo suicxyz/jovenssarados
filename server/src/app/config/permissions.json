@@ -1,9 +1,21 @@
 {
 	"permissions": [
 		"[get]/api/users=0",
-		"[get]/api/users/:id=0",
+		"[get]/api/users/:id=1",
 		"[post]/api/users=0",
 		"[update]/api/users/:id=1",
-		"[delete]/api/users/:id=1"
+		"[delete]/api/users/:id=1",
+
+		"[get]/api/events=0",
+		"[get]/api/events/:id=0",
+		"[post]/api/events=2",
+		"[put]/api/events/:id=2",
+		"[delete]/api/events/:id=2",
+
+		"[get]/api/user-events=1",
+		"[get]/api/user-events/:id=1",
+		"[post]/api/user-events=1",
+		"[put]/api/user-events/:id=1",
+		"[delete]/api/user-events/:id=1"
 	]
 }
