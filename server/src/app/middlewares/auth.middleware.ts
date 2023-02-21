@@ -10,6 +10,11 @@ export default async function (
 	const { permissions } = config.permissions;
 	const session = req.session.login;
 
+	if (req.url == "/api/auth/login" && session)
+		return res
+			.status(400)
+			.json({ status: "ERROR", message: "ANA[SessionAlreadySet]" });
+
 	for (const item of permissions) {
 		const method: string = item.split("[")[1].split("]")[0];
 		const route: string = item.split("]")[1].split("=")[0];
