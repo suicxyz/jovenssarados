@@ -1,14 +1,43 @@
-A API sempre retornará um JSON com o parâmetro "status", que pode ter dois valores, "ERROR" e "OK".
-Quando o valor de "status" for igual a "ERROR", existirá sempre um parâmetro "message", com os possíveis valores:
+A API sempre retornará um JSON com o parâmetro "status", que pode ter dois 
+valores, "ERROR" e "OK". Quando o valor de "status" for igual a "ERROR", 
+existirá sempre um parâmetro "message", com os possíveis valores:
 
-ANA - Action Non-Authorized   	- Ação não autorizada, redirecionar usuário para página de login.
-DNF - Document Not Found      	- Registro não encontrado.
-DAE - Document Already Exist  	- Já existe um registro com a mesma credencial (email, cpf, telefone etc).
-FNV - Format Not Valid        	- Formato inválido (CPF, email, etc).
-ONC - Operation Not Concluded 	- Operação não concluída, erro desconhecido.
-INS - ID Not Specified        	- ID não especificado
+ANA - Action Non-Authorized
+	Ação não autorizada.
 
-Quando o valor de "status" for igual a "OK", o parâmetro "message" existirá nos seguintes casos:
+DNF - Document Not Found
+	Registro não encontrado.
 
-DD - Document Deleted			- Registro excluído
-AA - Access Authorized 		- Acesso Autorizado
+DAE - Document Already Exist
+	Já existe um registro com a mesma credencial (email, cpf, telefone etc).
+
+FNV - Format Not Valid
+	Formato inválido (CPF, email, etc).
+
+ONC - Operation Not Concluded
+	Operação não concluída, erro desconhecido.
+
+INS - ID Not Specified
+	ID não especificado
+
+Quando o valor de "status" for igual a "OK", o parâmetro "message" existirá nos
+seguintes casos:
+
+DD - Document Deleted
+	Registro excluído
+
+AA - Access Authorized
+	Acesso Autorizado
+
+Quando uma request (seja ela do método GET, POST, PUT, DELETE ou até mesmo PATH)
+puder retornar a mesma "message" mais de uma vez, após a sigla, existirá, entre
+colchetes, o que ocasionou o retorno de erro (ou não). Por exemplo:
+
+DNF[User] - Document Not Found [User]
+	Um registro na collection "users" não foi encontrado.
+
+DNF[Event] - Document Not Found [Event]
+	Um registro na collection "events" não foi encontrado.
+
+* O exemplo acima é implementado quando um usuário lê o QRCode do evento, o método
+faz a busca nas collections pelos parâmetros "_id" de usuário e evento.
