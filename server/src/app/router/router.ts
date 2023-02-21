@@ -8,6 +8,8 @@ import {
 	UserEvent as UserEventModel,
 } from "@models";
 
+import auth from "../middlewares/auth.middleware";
+
 router.delete("/api/debug/users", async (req, res) => {
 	try {
 		const users = await UserModel.find();
@@ -45,22 +47,22 @@ router.delete("/api/debug/user-events", async (req, res) => {
 	}
 });
 
-router.get("/api/users", User.list);
-router.get("/api/users/:id", User.show);
-router.post("/api/users", User.create);
-router.put("/api/users/:id", User.update);
-router.delete("/api/users/:id", User.delete);
+router.get("/api/users", auth, User.list);
+router.get("/api/users/:id", auth, User.show);
+router.post("/api/users", auth, User.create);
+router.put("/api/users/:id", auth, User.update);
+router.delete("/api/users/:id", auth, User.delete);
 
-router.get("/api/events", Event.list);
-router.get("/api/events/:id", Event.show);
-router.post("/api/events", Event.create);
-router.put("/api/events/:id", Event.update);
-router.delete("/api/events/:id", Event.delete);
+router.get("/api/events", auth, Event.list);
+router.get("/api/events/:id", auth, Event.show);
+router.post("/api/events", auth, Event.create);
+router.put("/api/events/:id", auth, Event.update);
+router.delete("/api/events/:id", auth, Event.delete);
 
-router.get("/api/user-events", UserEvent.list);
-router.get("/api/user-events/:id", UserEvent.show);
-router.post("/api/user-events", UserEvent.create);
-router.put("/api/user-events", UserEvent.update);
-router.delete("/api/user-events/:id", UserEvent.delete);
+router.get("/api/user-events", auth, UserEvent.list);
+router.get("/api/user-events/:id", auth, UserEvent.show);
+router.post("/api/user-events", auth, UserEvent.create);
+router.put("/api/user-events", auth, UserEvent.update);
+router.delete("/api/user-events/:id", auth, UserEvent.delete);
 
 export default router;
