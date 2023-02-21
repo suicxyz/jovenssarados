@@ -13,21 +13,19 @@ export default new (class AuthController {
 			});
 
 			if (!user)
-				return res
-					.status(400)
-					.json({ status: "ERROR", message: "User not found." });
+				return res.status(400).json({ status: "ERROR", message: "DNF" });
 
 			if (!(await bcjs.compare(body.password, user.password)))
 				return res
 					.status(400)
-					.json({ status: "ERROR", message: "Wrong password." });
+					.json({ status: "ERROR", message: "CNV[Password]" });
 
 			// @ts-ignore
 			req.session.login = user;
 
 			return res.status(200).json({ status: "OK", session: req.session.login });
 		} catch (e) {
-			return res.status(400).json({ status: "ERROR", message: e.message });
+			return res.status(400).json({ status: "ERROR", message: "ONC" });
 		}
 	}
 })();
