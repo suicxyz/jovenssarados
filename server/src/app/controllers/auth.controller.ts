@@ -10,7 +10,7 @@ export default new (class AuthController {
 		try {
 			const user = await User.findOne({
 				$or: [{ email: body.email }, { cpf: body.cpf }],
-			});
+			}).select("+password");
 
 			if (!user)
 				return res.status(400).json({ status: "ERROR", message: "DNF" });
@@ -22,6 +22,7 @@ export default new (class AuthController {
 
 			// @ts-ignore
 			req.session.login = user;
+			user.password = undefined;
 
 			return res.status(200).json({ status: "OK", session: req.session.login });
 		} catch (e) {
