@@ -51,11 +51,9 @@ export default new (class UserEventController {
 			});
 
 			const user = await User.findById(body.user_id);
-			(function () {
-				console.log(this);
-			})();
+
 			await User.findByIdAndUpdate(body.user_id, {
-				registerd_events: [...user.registered_events, userEvent._id],
+				registered_events: [...user.registered_events, userEvent._id],
 			});
 
 			return res.status(200).json({ status: "OK", userEvent });
