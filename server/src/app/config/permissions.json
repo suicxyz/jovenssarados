@@ -16,6 +16,8 @@
 		"[get]/api/user-events/:id=1",
 		"[post]/api/user-events=1",
 		"[put]/api/user-events/:id=1",
-		"[delete]/api/user-events/:id=1"
+		"[delete]/api/user-events/:id=1",
+
+		"[post]/api/auth/login=-1"
 	]
 }
