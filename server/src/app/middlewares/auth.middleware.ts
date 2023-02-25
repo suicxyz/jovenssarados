@@ -21,6 +21,15 @@ export default async function (
 		const level: string = item.split("=")[1];
 
 		if (req.method == method.toUpperCase() && req.url == route) {
+			if (level == "-1") {
+				if (session) {
+					return res
+						.status(401)
+						.json({ status: "ERROR", message: "ANA[SessionAlreadySet]" });
+				}
+				return next();
+			}
+
 			if (level == "0") {
 				next();
 			} else if (level == "1") {
