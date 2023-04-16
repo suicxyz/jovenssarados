@@ -18,7 +18,10 @@ CNV - Credentials Not Valid
 	Credenciais inválidas (senha etc).
 
 ONC - Operation Not Concluded
-	Operação não concluída, erro desconhecido.
+	Operação não concluída, erro desconhecido ou não tratado.
+
+FOP - Failure on Payment
+	Falha no pagamento, erro não tratado.
 
 INS - ID Not Specified
 	ID não especificado

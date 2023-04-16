@@ -2,7 +2,10 @@ import qrcode from "qrcode";
 
 import { Event, User } from "@models";
 
-export default async (eventId: String, userId: String): Promise<any> => {
+export default async (eventId: string, userId: string): Promise<
+	{ status: string, message: string } |
+	{ image: string, text: string }
+> => {
 	try {
 		const user = await User.findById(userId);
 		if (!user) return { status: "ERROR", message: "DNF[User]" };

@@ -1,7 +1,7 @@
 import { Router } from "express";
 const router = Router();
 
-import { User, Event, UserEvent, Auth } from "@controllers";
+import { User, Event, UserEvent, Auth, Payment } from "@controllers";
 import {
 	User as UserModel,
 	Event as EventsModel,
@@ -66,5 +66,7 @@ router.put("/api/user-events", auth, UserEvent.update);
 router.delete("/api/user-events/:id", auth, UserEvent.delete);
 
 router.post("/api/auth/login", auth, Auth.login);
+
+router.post("/api/create-checkout-session", auth, Payment.createCheckoutSession);
 
 export default router;

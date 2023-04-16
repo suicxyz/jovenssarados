@@ -1,0 +1,8 @@
+{
+  "payment": {
+    "methods": [
+      "card", "pix", "boleto"
+    ],
+    "currency": "brl"
+  }
+}
